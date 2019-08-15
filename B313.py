@@ -54,10 +54,12 @@ class TopLevelTag:
         if self.attributes:
             for key, value in self.attributes.items():
                 attrs.append('{key}="{value}"'.format(key=key, value=value))
-        attrs = " ".join(attrs)
+            attrs = " " + " ".join(attrs)
+        else:
+            attrs = ""
 
         if self.children:
-            opening = "<%s %s>\n" % (self.tag, attrs)
+            opening = "<%s%s>\n" % (self.tag, attrs)
             internal = "%s" % self.text
             for child in self.children:
                 internal += str(child)
@@ -65,9 +67,9 @@ class TopLevelTag:
             return opening + internal + ending
         else:
             if self.is_single:
-                return "<{tag} {attrs}>\n".format(tag=self.tag, attrs=attrs)
+                return "<{tag}{attrs}>\n".format(tag=self.tag, attrs=attrs)
             else:
-                return "<{tag} {attrs}>{text}</{tag}>\n".format(
+                return "<{tag}{attrs}>{text}</{tag}>\n".format(
                     tag=self.tag, attrs=attrs, text=self.text
                 )
 
